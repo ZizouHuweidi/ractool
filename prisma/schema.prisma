@@ -7,29 +7,43 @@ datasource db {
   url = env("DATABASE_URL")
 }
 
-model User {
+enum GENDER {
+  MALE
+  FEMALE
+}
+
+enum ROLE {
+  REGULAR
+  SPECIAL
+}
+
+enum MEMBERSHIP_STATUS {
+  ACTIVE
+  INACTIVE
+}
+
+model Admin {
   id    Int     @id @default(autoincrement())
   email String  @unique
-  name  String?
-  posts Post[]
+  password  String
+  firstName  String
+  middleName  String?
+  lastName  String
+}
+
+model Member {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  password  String
+  firstName  String
+  middleName  String?
+  lastName  String
+  gender    GENDER
+  phoneNumber  Int
   profile Profile?
+  role  ROLE? @default(REGULAR)
+  membershipStatus MEMBERSHIP_STATUS?
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  viewCount Int      @default(0)
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
-}
 
-model Profile {
-  id     Int     @default(autoincrement()) @id
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId Int     @unique
-}
+
