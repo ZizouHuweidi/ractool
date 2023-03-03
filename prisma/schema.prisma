@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 enum GENDER {
@@ -13,37 +13,75 @@ enum GENDER {
 }
 
 enum ROLE {
-  REGULAR
-  SPECIAL
+  PRESIDENT
+  VICE_PRESIDENT
+  SECRETARY
+  SARGENT_AT_ARMS
+  TREASURER
 }
 
-enum MEMBERSHIP_STATUS {
-  ACTIVE
-  INACTIVE
+enum ACTIVITY_TYPE {
+  EVENT
+  MEETING
 }
 
-model Admin {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  password  String
-  firstName  String
-  middleName  String?
-  lastName  String
-}
+//model Admin {
+//  id    Int     @id @default(autoincrement())
+//  email String  @unique
+//  password  String
+//  firstName  String
+//  lastName  String
+//  role ROLE
+//}
 
 model Member {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  password  String
-  firstName  String
-  middleName  String?
-  lastName  String
-  gender    GENDER
-  phoneNumber  Int
-  profile Profile?
-  role  ROLE? @default(REGULAR)
-  membershipStatus MEMBERSHIP_STATUS?
+  id                Int          @id @default(autoincrement())
+  email             String       @unique
+  password          String
+  role              ROLE
+  firstName         String
+  lastName          String
+  gender            GENDER?
+  dob               DateTime
+  phone             Int
+  address           String?
+  startedAt         DateTime?
+  bio               String?
+  membershipFee     Int
+  membershipPaid    Int
+  actvitiesAttended Attendance[]
+  Receipts          Receipt[]
 }
 
+model Activity {
+  id          Int           @id @default(autoincrement())
+  name        String
+  description String
+  location    String
+  date        DateTime
+  type        ACTIVITY_TYPE
+  attendance  Attendance?
+  Reminders   Reminder[]
+}
 
+model Attendance {
+  id         Int      @id @default(autoincrement())
+  members    Member[] @relation
+  activity   Activity @relation(fields: [activityid], references: [id])
+  activityid Int      @unique
+}
 
+model Reminder {
+  id          Int      @id @default(autoincrement())
+  description String?
+  activity    Activity @relation(fields: [activityid], references: [id])
+  activityid  Int
+}
+
+model Receipt {
+  id       Int      @id @default(autoincrement())
+  date     DateTime
+  amount   Int
+  member   Member   @relation(fields: [memberId], references: [id])
+  memberId Int
+}
