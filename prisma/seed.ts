@@ -48,6 +48,18 @@ const userData: Prisma.UserCreateInput[] = [
   },
 ]
 
+// {
+// "email": "zubeir.huweidi@gmail.com",
+// "password": "poop1234",
+// "role": "PRESIDENT",
+// "firstName": "El Zubeir",
+// "lastName": "Huweidi",
+// "dob": "2012-04-23T18:25:43.511Z",
+// "phone": 2253190,
+// "membershipFee": 600,
+// "membershipPaid": 200
+// }
+
 async function main() {
   console.log(`Start seeding ...`)
   for (const u of userData) {
