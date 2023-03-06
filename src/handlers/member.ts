@@ -41,26 +41,28 @@ export const signin = async (req, res) => {
 
 // Get all
 export const getMembers = async (req, res) => {
-  const member = await prisma.member.findUnique({
-    where: {
-      id: req.member.id
-    }
-  })
+  try {
+    const member = await prisma.member.findMany()
 
-  res.json({ data: member })
+    res.json(member)
+  } catch (error) {
+    res.status(500).json({
+      message: "stinky poo poo"
+    })
+  }
 }
 
 // Get one
 export const getOneMember = async (req, res) => {
   const id = req.params.id
 
-  const member = await prisma.member.findFirst({
+  const member = await prisma.member.findUnique({
     where: {
       id: id
     }
   })
 
-  res.json({ data: member })
+  res.json(member)
 }
 
 
