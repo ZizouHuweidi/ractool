@@ -54,15 +54,13 @@ export const getMembers = async (req, res) => {
 
 // Get one
 export const getOneMember = async (req, res) => {
-  const id = req.params.id
-
-  const member = await prisma.member.findUnique({
-    where: {
-      id: id
-    }
+  const { id } = req.params
+  const member = await prisma.member.findFirst({
+    where: { id: Number(id) },
   })
-
-  res.json(member)
+  res.json({
+    member
+  })
 }
 
 
