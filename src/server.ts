@@ -3,7 +3,7 @@ import router from './router'
 import morgan from 'morgan'
 import cors from 'cors'
 import { protect } from './modules/auth'
-import { createMember, signin } from './handlers/member'
+import { createMember, signin } from './controllers/member'
 
 const app = express()
 

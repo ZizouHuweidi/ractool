@@ -66,25 +66,26 @@ export const getOneMember = async (req, res) => {
 
 // Update one
 export const updateMember = async (req, res) => {
-  const { id } = req.params
-
+  const { email, role, firstName, lastName, dob, phone, membershipFee, membershipPaid } = req.body
   try {
-    const memberData = await prisma.member.findUnique({
-      where: { id: Number(id) },
-    })
-
-    const updatedMember = await prisma.member.update({
-      where: { id: Number(id) || undefined },
+    const member = await prisma.member.update({
+      where: {
+        id: Number(req.params.id),
+      },
       data: {
-        password: req.body.password,
-        phone: req.body.phone,
-        membershipFee: req.body.membershipFee,
-        membershipPaid: req.body.membershipPaid
+        email: email,
+        role: role,
+        firstName: firstName,
+        lastName: lastName,
+        dob: dob,
+        phone: phone,
+        membershipFee: membershipFee,
+        membershipPaid: membershipPaid
       },
     })
-    res.json(updatedMember)
+    res.status(200).json(member)
   } catch (error) {
-    res.json({ error: `Member with ID ${id} does not exist in the database` })
+    res.status(400).json({ msg: error.message })
   }
 }
 
