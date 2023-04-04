@@ -35,22 +35,24 @@ enum ACTIVITY_TYPE {
 //}
 
 model Member {
-  id                Int          @id @default(autoincrement())
-  email             String       @unique
-  password          String
-  role              ROLE
-  firstName         String
-  lastName          String
-  gender            GENDER?
-  dob               DateTime
-  phone             Int
-  address           String?
-  startedAt         DateTime?
-  bio               String?
-  membershipFee     Int
-  membershipPaid    Int
-  actvitiesAttended Attendance[]
-  Receipts          Receipt[]
+  id             Int          @id @default(autoincrement())
+  email          String       @unique
+  password       String
+  //createdAt      DateTime     @default(now())
+  //updatedAt      DateTime     @updatedAt
+  role           ROLE
+  firstName      String
+  lastName       String
+  gender         GENDER?
+  dob            DateTime
+  phone          Int
+  address        String?
+  startedAt      DateTime?
+  bio            String?
+  membershipFee  Int
+  membershipPaid Int
+  Receipts       Receipt[]
+  Attendance     Attendance[]
 }
 
 model Activity {
@@ -60,22 +62,34 @@ model Activity {
   location    String
   date        DateTime
   type        ACTIVITY_TYPE
-  attendance  Attendance?
-  Reminders   Reminder[]
+  //createdAt   DateTime      @default(now())
+  //updatedAt   DateTime      @updatedAt
+  //Reminders   Reminder[]
+  Attendance  Attendance[]
 }
 
+// Define the Attendance schema
 model Attendance {
   id         Int      @id @default(autoincrement())
-  members    Member[] @relation
-  activity   Activity @relation(fields: [activityid], references: [id])
-  activityid Int      @unique
+  memberId   Int
+  member     Member   @relation(fields: [memberId], references: [id])
+  activityId Int
+  activity   Activity @relation(fields: [activityId], references: [id])
+  attended   Boolean  @default(false)
+  //createdAt  DateTime @default(now())
+  //updatedAt  DateTime @updatedAt
+
+  // Add a unique constraint to ensure each member can only attend an event once
+  @@unique([memberId, activityId])
+  // Add foreign keys to enforce referential integrity between Attendance and Member/Event
+  @@index([memberId], name: "member_id_idx")
+  @@index([activityId], name: "activity_id_idx")
 }
 
-model Reminder {
-  id          Int      @id @default(autoincrement())
-  description String?
-  activity    Activity @relation(fields: [activityid], references: [id])
-  activityid  Int
+model Notification {
+  id      Int    @id @default(autoincrement())
+  title   String
+  content String
 }
 
 model Receipt {

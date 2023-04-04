@@ -2,17 +2,24 @@ import prisma from '../db'
 import { comparePasswords, createJWT, hashPassword } from '../modules/auth'
 
 export const createMember = async (req, res) => {
+
+  const { email, password, role, firstName, lastName, gender, dob, phone, address, startedAt, bio, membershipFee, membershipPaid, actvitiesAttended } = req.body
+
   const member = await prisma.member.create({
     data: {
-      email: req.body.email,
-      password: await hashPassword(req.body.password),
-      role: req.body.role,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      dob: req.body.dob,
-      phone: req.body.phone,
-      membershipFee: req.body.membershipFee,
-      membershipPaid: req.body.membershipPaid,
+      email: email,
+      password: await hashPassword(password),
+      role: role,
+      firstName: firstName,
+      lastName: lastName,
+      gender: gender,
+      dob: dob,
+      phone: phone,
+      address: address,
+      startedAt: startedAt,
+      bio: bio,
+      membershipFee: membershipFee,
+      membershipPaid: membershipPaid,
     }
   })
 

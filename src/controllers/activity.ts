@@ -9,9 +9,9 @@ export const createActivity = async (req, res) => {
         description: description,
         location: location,
         date: date,
-        type: type
+        type: type,
       },
-    })
+    });
     res.status(201).json(activity)
   } catch (error) {
     res.status(400).json({ msg: error.message })
