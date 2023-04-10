@@ -94,7 +94,7 @@ model Notification {
 
 model Receipt {
   id       Int      @id @default(autoincrement())
-  date     DateTime
+  date     DateTime @default(now())
   amount   Int
   member   Member   @relation(fields: [memberId], references: [id])
   memberId Int

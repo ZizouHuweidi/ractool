@@ -43,7 +43,7 @@ router.delete('/attendance/:id', deleteAttendance)
 /**
  * Receipt
  */
-router.post('/receipt/:id', createReceipt)
+router.post('/receipt', createReceipt)
 router.get('/receipt', getReceipts)
 router.get('/receipt/:id', getOneReceipt)
 router.patch('/receipt/:id', updateReceipt)
