@@ -8,38 +8,31 @@ datasource db {
 }
 
 enum GENDER {
-  MALE
-  FEMALE
+  male
+  female
 }
 
 enum ROLE {
-  PRESIDENT
-  VICE_PRESIDENT
-  SECRETARY
-  SARGENT_AT_ARMS
-  TREASURER
+  president
+  vice_president
+  secretary
+  sargent_at_arms
+  treasurer
+  member
 }
 
-enum ACTIVITY_TYPE {
-  EVENT
-  MEETING
+enum STATUS {
+  present
+  late
+  absent
 }
-
-//model Admin {
-//  id    Int     @id @default(autoincrement())
-//  email String  @unique
-//  password  String
-//  firstName  String
-//  lastName  String
-//  role ROLE
-//}
 
 model Member {
   id             Int          @id @default(autoincrement())
   email          String       @unique
   password       String
-  //createdAt      DateTime     @default(now())
-  //updatedAt      DateTime     @updatedAt
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
   role           ROLE
   firstName      String
   lastName       String
@@ -51,51 +44,50 @@ model Member {
   bio            String?
   membershipFee  Int
   membershipPaid Int
-  Receipts       Receipt[]
-  Attendance     Attendance[]
+  receipts       Receipt[]
+  attendances    Attendance[]
 }
 
 model Activity {
-  id          Int           @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   name        String
   description String
   location    String
   date        DateTime
-  type        ACTIVITY_TYPE
-  //createdAt   DateTime      @default(now())
-  //updatedAt   DateTime      @updatedAt
-  //Reminders   Reminder[]
-  Attendance  Attendance[]
+  type        String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now()) @updatedAt
+  attendance  Attendance[]
 }
 
-// Define the Attendance schema
 model Attendance {
-  id         Int      @id @default(autoincrement())
-  memberId   Int
   member     Member   @relation(fields: [memberId], references: [id])
-  activityId Int
+  memberId   Int
   activity   Activity @relation(fields: [activityId], references: [id])
-  attended   Boolean  @default(false)
-  //createdAt  DateTime @default(now())
-  //updatedAt  DateTime @updatedAt
+  activityId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+  status     STATUS   @default(absent)
 
-  // Add a unique constraint to ensure each member can only attend an event once
-  @@unique([memberId, activityId])
+  @@id([activityId])
   // Add foreign keys to enforce referential integrity between Attendance and Member/Event
   @@index([memberId], name: "member_id_idx")
   @@index([activityId], name: "activity_id_idx")
 }
 
 model Notification {
-  id      Int    @id @default(autoincrement())
-  title   String
-  content String
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
 }
 
 model Receipt {
-  id       Int      @id @default(autoincrement())
-  date     DateTime @default(now())
-  amount   Int
-  member   Member   @relation(fields: [memberId], references: [id])
-  memberId Int
+  id        Int      @id @default(autoincrement())
+  date      DateTime @default(now())
+  amount    Int
+  member    Member   @relation(fields: [memberId], references: [id])
+  memberId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }

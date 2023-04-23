@@ -73,7 +73,7 @@ export const getOneMember = async (req, res) => {
 
 // Update one
 export const updateMember = async (req, res) => {
-  const { email, role, firstName, lastName, dob, phone, membershipFee, membershipPaid } = req.body
+  const { email, role, firstName, lastName, dob, phone, membershipFee } = req.body
   try {
     const member = await prisma.member.update({
       where: {
@@ -87,7 +87,6 @@ export const updateMember = async (req, res) => {
         dob: dob,
         phone: phone,
         membershipFee: membershipFee,
-        membershipPaid: membershipPaid
       },
     })
     res.status(200).json(member)

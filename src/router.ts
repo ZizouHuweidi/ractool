@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { body, oneOf, validationResult } from "express-validator"
 import { deleteMember, getOneMember, getMembers, updateMember } from './controllers/member'
 import { createActivity, deleteActivity, getOneActivity, getActivities, updateActivity } from './controllers/activity'
-import { takeAttendance, /*updateAttendance*/ deleteAttendance, /*getEventAttendance*/ /*getMemberAttendance*/ getAttendance } from './controllers/attendance'
+import { takeAttendance, updateAttendance, deleteAttendance, getMemberAttendance, getActivityAttendance, getAllAttendance } from './controllers/attendance'
 import { createReceipt, getReceipts, getOneReceipt, updateReceipt, deleteReceipt } from './controllers/receipt'
 import { createNotification, deleteNotification, getOneNotification, getNotifications, updateNotification } from './controllers/notification'
 import { handleInputErrors } from './modules/middleware'
@@ -32,10 +32,10 @@ router.delete('/activity/:id', deleteActivity)
  */
 
 router.post('/attendance', takeAttendance)
-router.get('/attendance', getAttendance)
-// router.get('/attendance/:activityId', getEventAttendance)
-// router.get('/attendance/member/:memberId', getMemberAttendance)
-// router.patch('/attendance/:activityId/', updateAttendance)
+router.get('/attendance', getAllAttendance)
+router.get('/attendance/:id', getActivityAttendance)
+router.get('/attendance/member/:id', getMemberAttendance)
+router.patch('/attendance/:id', updateAttendance)
 router.delete('/attendance/:id', deleteAttendance)
 
 
