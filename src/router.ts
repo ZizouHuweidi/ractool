@@ -7,6 +7,9 @@ import { createReceipt, getReceipts, getOneReceipt, updateReceipt, deleteReceipt
 import { createNotification, deleteNotification, getOneNotification, getNotifications, updateNotification } from './controllers/notification'
 import { handleInputErrors } from './modules/middleware'
 
+
+//TODO: Finish all needed validation and error handeling
+
 const router = Router()
 
 /**
@@ -54,6 +57,7 @@ router.delete('/receipt/:id', deleteReceipt)
 /**
  * notifications
  */
+// TODO: Fininsh notification implementation
 router.post('/notification', createNotification)
 router.get('/notification', getNotifications)
 router.get('/notification/:id', getOneNotification)
